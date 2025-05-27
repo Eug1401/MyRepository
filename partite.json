@@ -67,5 +67,19 @@
     "ospite": "Milan",
     "logo_casa": "real_madrid.png",
     "logo_ospite": "milan.png"
+  },
+  {
+    "giornata": 4,
+    "data": "05/06",
+    "ora": "21:00",
+    "casa": "Milan",
+    "ospite": "Barcellona",
+    "logo_casa": "milan.png",
+    "logo_ospite": "barcellona.png",
+    "risultato": "4-3",
+    "marcatori": {
+      "Milan": ["Giroud", "Theo","Giroud","Pulisic"],
+      "PSG": ["Mbappé", "Hakimi","Vitinha"]
+    }
   }
 ]
