@@ -1,0 +1,22 @@
+[
+  {
+    "squadra": "Juventus",
+    "logo": "juventus.png"
+  },
+  {
+    "squadra": "Milan",
+    "logo": "milan.png"
+  },
+  {
+    "squadra": "PSG",
+    "logo": "psg.png"
+  },
+  {
+    "squadra": "Real Madrid",
+    "logo": "real_madrid.png"
+  },
+  {
+    "squadra": "Barcellona",
+    "logo": "barcellona.png"
+  }
+]
