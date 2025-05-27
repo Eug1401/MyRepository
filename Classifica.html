@@ -74,8 +74,14 @@
       object-fit: contain;
     }
 
-    .back-button {
+    .button-container {
       margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .back-button {
       padding: 12px 28px;
       background-color: #2e7d4f;
       color: white;
@@ -85,6 +91,7 @@
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       transition: background 0.3s, transform 0.2s;
+      text-align: center;
     }
 
     .back-button:hover {
@@ -131,7 +138,9 @@
     </tbody>
   </table>
 
-  <a href="index.html" class="back-button">🏠 Torna alla Home</a>
+  <div class="button-container">
+    <a href="index.html" class="back-button">🏠 Torna alla Home</a>
+  </div>
 
   <script>
     async function generaClassifica() {
@@ -150,7 +159,7 @@
           N: 0,
           P: 0,
           GF: 0,
-          GS: 0,
+          GS: 0
         };
       }
 
@@ -181,7 +190,14 @@
         }
       }
 
-      const classifica = Object.values(stats).sort((a, b) => b.punti - a.punti || b.GF - b.GS - (a.GF - a.GS));
+      const classifica = Object.values(stats).sort((a, b) => {
+        if (b.punti !== a.punti) return b.punti - a.punti;
+        const diffA = a.GF - a.GS;
+        const diffB = b.GF - b.GS;
+        if (diffB !== diffA) return diffB - diffA;
+        return b.GF - a.GF;
+      });
+
       const tbody = document.getElementById('classifica-body');
       tbody.innerHTML = classifica.map((s, idx) => `
         <tr>
