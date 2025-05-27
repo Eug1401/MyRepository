@@ -1,0 +1,71 @@
+[
+  {
+    "giornata": 1,
+    "data": "01/06",
+    "ora": "17:00",
+    "casa": "Juventus",
+    "ospite": "Milan",
+    "logo_casa": "juventus.png",
+    "logo_ospite": "milan.png",
+    "risultato": "2-1",
+    "marcatori": {
+      "Juventus": ["Vlahovic", "Chiesa"],
+      "Milan": ["Leao"]
+    }
+  },
+  {
+    "giornata": 1,
+    "data": "01/06",
+    "ora": "19:00",
+    "casa": "PSG",
+    "ospite": "Juventus",
+    "logo_casa": "psg.png",
+    "logo_ospite": "juventus.png",
+    "risultato": "1-3",
+    "marcatori": {
+      "PSG": ["Mbappé"],
+      "Juventus": ["Chiesa", "Rabiot", "Vlahovic"]
+    }
+  },
+  {
+    "giornata": 2,
+    "data": "02/06",
+    "ora": "18:30",
+    "casa": "Real Madrid",
+    "ospite": "Barcellona",
+    "logo_casa": "real_madrid.png",
+    "logo_ospite": "barcellona.png"
+  },
+  {
+    "giornata": 2,
+    "data": "02/06",
+    "ora": "20:00",
+    "casa": "Milan",
+    "ospite": "PSG",
+    "logo_casa": "milan.png",
+    "logo_ospite": "psg.png",
+    "risultato": "2-2",
+    "marcatori": {
+      "Milan": ["Giroud", "Theo"],
+      "PSG": ["Mbappé", "Hakimi"]
+    }
+  },
+  {
+    "giornata": 3,
+    "data": "03/06",
+    "ora": "18:00",
+    "casa": "Barcellona",
+    "ospite": "Juventus",
+    "logo_casa": "barcellona.png",
+    "logo_ospite": "juventus.png"
+  },
+  {
+    "giornata": 3,
+    "data": "03/06",
+    "ora": "20:00",
+    "casa": "Real Madrid",
+    "ospite": "Milan",
+    "logo_casa": "real_madrid.png",
+    "logo_ospite": "milan.png"
+  }
+]
