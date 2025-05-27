@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Calendario Partite - KickOff</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
       --verde: #2e7d4f;
       --verde-chiaro: #e3f2e4;
     }
 
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #fcf9f2;
-      color: var(--verde);
       margin: 0;
       padding: 0 20px 60px;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fcf9f2;
+      color: var(--verde);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -35,31 +39,49 @@
       margin-bottom: 20px;
     }
 
-    #search {
+    #search,
+    #giornata-select {
       padding: 10px;
       font-size: 16px;
       border-radius: 6px;
       border: 1px solid #ccc;
+      margin-bottom: 15px;
+    }
+
+    #search {
       width: 300px;
       max-width: 90%;
-      margin-bottom: 30px;
+    }
+
+    #giornata-select {
+      width: 200px;
+      max-width: 90%;
     }
 
     .match {
-      max-width: 900px;    /* fissa la larghezza massima su desktop */
-      width: 95%;          /* si adatta su mobile */
-      margin: 20px auto;   /* centrata orizzontalmente */
-      padding: 20px;
-      box-sizing: border-box;
+      width: 900px;
+      max-width: 100%;
       background: white;
+      margin: 20px auto;
+      padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .giornata {
+      text-align: center;
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 5px;
     }
 
     .match h3 {
-      text-align: center; /* ✅ centratura testo data/ora */
+      text-align: center;
       font-size: 18px;
-      margin: 0 0 15px 0;
+      margin-bottom: 15px;
       color: var(--verde);
     }
 
@@ -69,14 +91,14 @@
       align-items: center;
       text-align: center;
       gap: 10px;
-      flex-wrap: nowrap;        /* ⛔ vieta di andare a capo */
-      min-width: 0;              /* ✅ evita overflow interno */
+      width: 100%;
+      flex-wrap: nowrap;
     }
 
     .team {
       flex: 1;
-      min-width: 0;              /* ✅ consente il ridimensionamento anche stretto */
-      overflow: hidden;          /* evita allungamenti anomali */
+      min-width: 0;
+      overflow: hidden;
     }
 
     .team img {
@@ -85,63 +107,45 @@
       object-fit: contain;
       margin-bottom: 5px;
     }
+
     .vs {
-      font-weight: bold;
       font-size: 32px;
-      flex: 0.5;
+      font-weight: bold;
       color: #555;
+      flex: 0.5;
     }
 
     .result {
-      margin-top: 10px;
-      font-size: 25px;
+      margin-top: 15px;
+      font-size: 20px;
       text-align: center;
       color: #1b5e20;
     }
 
     .scorers {
-      font-size: 20px;
+      font-size: 16px;
       margin-top: 5px;
       color: #555;
+      text-align: center;
     }
 
-    @media (max-width: 600px) {
-      header img { width: 120px; }
-      h1 { font-size: 22px; }
-      
-      /* ❌ NON cambiare flex-direction */
-      /* .teams { flex-direction: column; } */
-
-      .vs { margin: 10px 0; }
+    @media (max-width: 900px) {
+      .match {
+        width: 300px;
+        padding: 15px;
+      }
 
       .team img {
         width: 32px;
         height: 32px;
-        object-fit: contain;
-      }
-
-      .match {
-        width: 95%;
-        padding: 15px;
-      }
-
-      #search {
-        width: 80%;
-        max-width: none;
       }
 
       .vs {
-        font-size: 16px;
+        font-size: 22px;
       }
+
       .scorers {
         font-size: 13px;
-      }
-      
-    }
-
-    @media (min-width: 920px) {
-      .match {
-        width: 900px;
       }
     }
   </style>
@@ -155,56 +159,48 @@
   <h1>Calendario Partite</h1>
 
   <input type="text" id="search" placeholder="Cerca squadra...">
+  <select id="giornata-select">
+    <option value="">Tutte le giornate</option>
+  </select>
 
   <div id="partite-container"></div>
 
   <script>
     const partite = [
-      {
-        data: "01/06",
-        ora: "17:00",
-        casa: "Juventus",
-        ospite: "Milan",
-        logo_casa: "juventus.png",
-        logo_ospite: "milan.png",
-        risultato: "2-1",
-        marcatori: {
-          "Juventus": ["Vlahovic", "Chiesa"],
-          "Milan": ["Leao"]
-        }
-      },
-      {
-        data: "01/06",
-        ora: "19:00",
-        casa: "PSG",
-        ospite: "Juventus",
-        logo_casa: "psg.png",
-        logo_ospite: "juventus.png",
-        risultato: "1-3",
-        marcatori: {
-          "PSG": ["Mbappé"],
-          "Juventus": ["Chiesa", "Rabiot", "Vlahovic"]
-        }
-      },
-      {
-        data: "02/06",
-        ora: "18:30",
-        casa: "Real Madrid",
-        ospite: "Barcellona",
-        logo_casa: "real_madrid.png",
-        logo_ospite: "barcellona.png"
-      }
+      { giornata: 1, data: "01/06", ora: "17:00", casa: "Juventus", ospite: "Milan", logo_casa: "juventus.png", logo_ospite: "milan.png", risultato: "2-1", marcatori: { "Juventus": ["Vlahovic", "Chiesa"], "Milan": ["Leao"] }},
+      { giornata: 1, data: "01/06", ora: "19:00", casa: "PSG", ospite: "Juventus", logo_casa: "psg.png", logo_ospite: "juventus.png", risultato: "1-3", marcatori: { "PSG": ["Mbappé"], "Juventus": ["Chiesa", "Rabiot", "Vlahovic"] }},
+      { giornata: 2, data: "02/06", ora: "18:30", casa: "Real Madrid", ospite: "Barcellona", logo_casa: "real_madrid.png", logo_ospite: "barcellona.png" },
+      { giornata: 2, data: "02/06", ora: "20:00", casa: "Milan", ospite: "PSG", logo_casa: "milan.png", logo_ospite: "psg.png", risultato: "2-2", marcatori: { "Milan": ["Giroud", "Theo"], "PSG": ["Mbappé", "Hakimi"] }},
+      { giornata: 3, data: "03/06", ora: "18:00", casa: "Barcellona", ospite: "Juventus", logo_casa: "barcellona.png", logo_ospite: "juventus.png" },
+      { giornata: 3, data: "03/06", ora: "20:00", casa: "Real Madrid", ospite: "Milan", logo_casa: "real_madrid.png", logo_ospite: "milan.png" }
     ];
 
     const container = document.getElementById("partite-container");
     const search = document.getElementById("search");
+    const giornataSelect = document.getElementById("giornata-select");
 
-    function mostraPartite(filtro = "") {
+    function popolaGiornate() {
+      const giornate = [...new Set(partite.map(p => p.giornata))].sort((a, b) => a - b);
+      giornate.forEach(g => {
+        const opt = document.createElement("option");
+        opt.value = g;
+        opt.textContent = `Giornata ${g}`;
+        giornataSelect.appendChild(opt);
+      });
+    }
+
+    function mostraPartite() {
+      const filtroSquadra = search.value.trim().toLowerCase();
+      const filtroGiornata = giornataSelect.value;
+
       container.innerHTML = "";
-      const filtrate = partite.filter(p =>
-        p.casa.toLowerCase().includes(filtro) ||
-        p.ospite.toLowerCase().includes(filtro)
-      );
+
+      const filtrate = partite.filter(p => {
+        const includeTeam = p.casa.toLowerCase().includes(filtroSquadra) || p.ospite.toLowerCase().includes(filtroSquadra);
+        if (filtroSquadra) return includeTeam;
+        if (filtroGiornata) return p.giornata == filtroGiornata;
+        return true;
+      });
 
       if (filtrate.length === 0) {
         container.innerHTML = "<p>Nessuna partita trovata.</p>";
@@ -216,6 +212,7 @@
         div.className = "match";
 
         let html = `
+          <div class="giornata">Giornata ${p.giornata}</div>
           <h3>${p.data} – ${p.ora}</h3>
           <div class="teams">
             <div class="team">
@@ -232,8 +229,8 @@
 
         if (p.risultato && p.marcatori) {
           html += `<div class="result">Marcatori:</div>`;
-          html += `<div class="scorers"><strong>${p.casa}</strong>: ${p.marcatori[p.casa].join(", ") || "—"}</div>`;
-          html += `<div class="scorers"><strong>${p.ospite}</strong>: ${p.marcatori[p.ospite].join(", ") || "—"}</div>`;
+          html += `<div class="scorers"><strong>${p.casa}</strong>: ${p.marcatori[p.casa]?.join(", ") || "—"}</div>`;
+          html += `<div class="scorers"><strong>${p.ospite}</strong>: ${p.marcatori[p.ospite]?.join(", ") || "—"}</div>`;
         }
 
         div.innerHTML = html;
@@ -241,11 +238,11 @@
       });
     }
 
+    popolaGiornate();
     mostraPartite();
 
-    search.addEventListener("input", () => {
-      mostraPartite(search.value.trim().toLowerCase());
-    });
+    search.addEventListener("input", mostraPartite);
+    giornataSelect.addEventListener("change", mostraPartite);
   </script>
 
 </body>
