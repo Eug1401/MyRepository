@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Classifica - KickOff</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #e3f2e4;
+      color: #2e7d4f;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header img {
+      width: 140px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 32px;
+      color: #2e7d4f;
+    }
+
+    table {
+      width: 100%;
+      max-width: 1000px;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    thead {
+      background-color: #2e7d4f;
+      color: white;
+    }
+
+    th, td {
+      padding: 14px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #ddd;
+    }
+
+    tbody tr:hover {
+      background-color: #f1f8f4;
+    }
+
+    .team-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: start;
+    }
+
+    .team-name img {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+    }
+
+    .back-button {
+      margin-top: 30px;
+      padding: 12px 28px;
+      background-color: #2e7d4f;
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .back-button:hover {
+      background-color: #388e3c;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 600px) {
+      th, td {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      .team-name img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo -->
+  <header>
+    <img src="kickoff_logo.png" alt="Logo KickOff">
+  </header>
+
+  <!-- Titolo -->
+  <h1>Classifica</h1>
+
+  <!-- Tabella -->
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Squadra</th>
+        <th>Punti</th>
+        <th>V</th>
+        <th>N</th>
+        <th>P</th>
+        <th>GF</th>
+        <th>GS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td class="team-name"><img src="classifica_loghi/juventus.png" alt="Juventus"> Juventus</td>
+        <td>12</td><td>4</td><td>0</td><td>0</td><td>10</td><td>2</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td class="team-name"><img src="classifica_loghi/real_madrid.png" alt="Real Madrid"> Real Madrid</td>
+        <td>9</td><td>3</td><td>0</td><td>1</td><td>9</td><td>4</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td class="team-name"><img src="classifica_loghi/psg.png" alt="PSG"> PSG</td>
+        <td>6</td><td>2</td><td>0</td><td>2</td><td>6</td><td>6</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td class="team-name"><img src="classifica_loghi/milan.png" alt="Milan"> Milan</td>
+        <td>3</td><td>1</td><td>0</td><td>3</td><td>5</td><td>8</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td class="team-name"><img src="classifica_loghi/barcellona.png" alt="Barcellona"> Barcellona</td>
+        <td>0</td><td>0</td><td>0</td><td>4</td><td>3</td><td>10</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pulsante Home -->
+  <a href="index.html" class="back-button">🏠 Torna alla Home</a>
+
+</body>
+</html>
