@@ -107,15 +107,12 @@
 </head>
 <body>
 
-  <!-- Logo -->
   <header>
     <img src="kickoff_logo.png" alt="Logo KickOff">
   </header>
 
-  <!-- Titolo -->
   <h1>Classifica</h1>
 
-  <!-- Tabella -->
   <table>
     <thead>
       <tr>
@@ -129,37 +126,82 @@
         <th>GS</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td class="team-name"><img src="classifica_loghi/juventus.png" alt="Juventus"> Juventus</td>
-        <td>12</td><td>4</td><td>0</td><td>0</td><td>10</td><td>2</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td class="team-name"><img src="classifica_loghi/real_madrid.png" alt="Real Madrid"> Real Madrid</td>
-        <td>9</td><td>3</td><td>0</td><td>1</td><td>9</td><td>4</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td class="team-name"><img src="classifica_loghi/psg.png" alt="PSG"> PSG</td>
-        <td>6</td><td>2</td><td>0</td><td>2</td><td>6</td><td>6</td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td class="team-name"><img src="classifica_loghi/milan.png" alt="Milan"> Milan</td>
-        <td>3</td><td>1</td><td>0</td><td>3</td><td>5</td><td>8</td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td class="team-name"><img src="classifica_loghi/barcellona.png" alt="Barcellona"> Barcellona</td>
-        <td>0</td><td>0</td><td>0</td><td>4</td><td>3</td><td>10</td>
-      </tr>
+    <tbody id="classifica-body">
+      <!-- Contenuto generato via JS -->
     </tbody>
   </table>
 
-  <!-- Pulsante Home -->
   <a href="index.html" class="back-button">🏠 Torna alla Home</a>
+
+  <script>
+    async function generaClassifica() {
+      const [squadre, partite] = await Promise.all([
+        fetch('squadre.json').then(res => res.json()),
+        fetch('partite.json').then(res => res.json())
+      ]);
+
+      const stats = {};
+      for (const { squadra, logo } of squadre) {
+        stats[squadra] = {
+          squadra,
+          logo,
+          punti: 0,
+          V: 0,
+          N: 0,
+          P: 0,
+          GF: 0,
+          GS: 0,
+        };
+      }
+
+      for (const partita of partite) {
+        if (!partita.risultato || !partita.marcatori) continue;
+
+        const [golCasa, golOspite] = partita.risultato.split('-').map(Number);
+        const { casa, ospite } = partita;
+
+        stats[casa].GF += golCasa;
+        stats[casa].GS += golOspite;
+        stats[ospite].GF += golOspite;
+        stats[ospite].GS += golCasa;
+
+        if (golCasa > golOspite) {
+          stats[casa].punti += 3;
+          stats[casa].V += 1;
+          stats[ospite].P += 1;
+        } else if (golCasa < golOspite) {
+          stats[ospite].punti += 3;
+          stats[ospite].V += 1;
+          stats[casa].P += 1;
+        } else {
+          stats[casa].punti += 1;
+          stats[ospite].punti += 1;
+          stats[casa].N += 1;
+          stats[ospite].N += 1;
+        }
+      }
+
+      const classifica = Object.values(stats).sort((a, b) => b.punti - a.punti || b.GF - b.GS - (a.GF - a.GS));
+      const tbody = document.getElementById('classifica-body');
+      tbody.innerHTML = classifica.map((s, idx) => `
+        <tr>
+          <td>${idx + 1}</td>
+          <td class="team-name">
+            <img src="classifica_loghi/${s.logo}" alt="${s.squadra}">
+            ${s.squadra}
+          </td>
+          <td>${s.punti}</td>
+          <td>${s.V}</td>
+          <td>${s.N}</td>
+          <td>${s.P}</td>
+          <td>${s.GF}</td>
+          <td>${s.GS}</td>
+        </tr>
+      `).join('');
+    }
+
+    generaClassifica();
+  </script>
 
 </body>
 </html>
