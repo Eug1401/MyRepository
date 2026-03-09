@@ -2,20 +2,15 @@ package com.example.demo.logic;
 
 import com.example.demo.DTO.*;
 import com.example.demo.Entity.StatusObject;
-import com.example.demo.Enums.Esito;
-import com.example.demo.Enums.Stato;
 import com.example.demo.mapper.StatusObjectMapper;
 import com.example.demo.repository.StatusObjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.data.projection.EntityProjection.ProjectionType.DTO;
 
 @Service
 public class StatusObjectService {
@@ -34,15 +29,11 @@ public class StatusObjectService {
     @CacheEvict(value = "StatusObjectCache", key = "'all'")
     public EsitDTO addStatusObject(PostStatusObjectDTO statusObjectDTO) {
 
-        try {
-            StatusObject SO = statusObjectMapper.toEntity(statusObjectDTO);
+        StatusObject SO = statusObjectMapper.toEntity(statusObjectDTO);
 
-            statusObjectRepository.save(SO);
-            return new PositiveEsitDTO("Status object salvato");
+        statusObjectRepository.save(SO);
 
-        } catch(Exception e) {
-            return new NegativeEsitDTO(e.getMessage());
-        }
+        return new PositiveEsitDTO("Status object salvato");
     }
 
 
