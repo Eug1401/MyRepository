@@ -12,11 +12,11 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface StatusObjectMapper {
 
-    @Mapping(target = "stato", constant = "DA_AGGIORNARE")
     PostStatusObjectDTO toPostStatusObjectDTO(StatusObject statusObject);
 
     PutStatusObjectDTO toPutStatusObjectDTO(StatusObject statusObject);
 
+    @Mapping(target = "stato", constant = "DA_AGGIORNARE")
     StatusObject toEntity(PostStatusObjectDTO postStatusObjectDTO);
 
     ResponseStatusObjectDTO toResponseStatusObject(StatusObject statusObject);

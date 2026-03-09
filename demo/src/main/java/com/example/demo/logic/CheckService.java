@@ -1,5 +1,7 @@
 package com.example.demo.logic;
 
+import com.example.demo.DTO.NegativeEsitDTO;
+import com.example.demo.DTO.PositiveEsitDTO;
 import com.example.demo.DTO.PostIncomingMessageDTO;
 import com.example.demo.Enums.Esito;
 import com.example.demo.Entity.IncomingMessage;
@@ -28,56 +30,40 @@ public class CheckService {
 
     public EsitDTO checkMessage(PostIncomingMessageDTO IR)
     {
-        EsitDTO Res = new EsitDTO();
-
         IncomingMessage IM = incomingMessageMapper.toIncomingMessage(IR);
 
-        if(IM.getStringaDaControllare().equals(MessaggioDaControllare.CIAO.getValore())) Res.setEsito(Esito.POSITIVO.getValore());
+        if(IM.getStringaDaControllare().equals(MessaggioDaControllare.CIAO.getValore())) return new PositiveEsitDTO("Il messaggio inviato risulta corretto");
 
-        else Res.setEsito(Esito.NEGATIVO.getValore());
+        else return new NegativeEsitDTO("Il messaggio inviato non coincide con quello nel sistema");
 
-        Res.setMessage(IM.getStringaDaControllare());
-
-        return Res;
     }
 
 
     public EsitDTO addMessage(PostIncomingMessageDTO postIncomingMessageDTO) {
-        EsitDTO res = new EsitDTO();
 
         IncomingMessage IM = incomingMessageMapper.toIncomingMessage(postIncomingMessageDTO);
         try {
             objectRepository.save(IM);
-            res.setEsito(Esito.POSITIVO.getValore());
+            return new PositiveEsitDTO("Messaggio salvato in memoria");
         } catch (Exception e) {
-            res.setEsito(Esito.NEGATIVO.getValore());
+            return new NegativeEsitDTO(e.getMessage());
         }
-
-        res.setMessage(IM.getStringaDaControllare());
-        return res;
     }
 
 
     public EsitDTO deleteById (Long id) {
 
-        EsitDTO RO = new EsitDTO();
-
         Optional<IncomingMessage> MDC = objectRepository.findById(id);
 
         if(MDC.isPresent()) {
-            RO.setMessage(MDC.get().getStringaDaControllare());
 
             objectRepository.deleteById(id);
-            RO.setEsito(Esito.POSITIVO.getValore());
+            return new PositiveEsitDTO("Elemento "+id+ " rimosso dalla memoria");
         }
 
         else {
-            RO.setEsito(Esito.NEGATIVO.getValore());
-            RO.setMessage("ID non presente nel database");
+            return new NegativeEsitDTO("Risorsa non trovata");
         }
-
-
-        return RO;
     }
 
 }
