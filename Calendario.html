@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Calendario Partite - KickOff</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --verde: #2e7d4f;
+      --verde-chiaro: #e3f2e4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0 20px 60px;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fcf9f2;
+      color: var(--verde);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      text-align: center;
+      margin: 30px 0 10px;
+    }
+
+    header img {
+      width: 160px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    #search,
+    #giornata-select {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+    }
+
+    #search {
+      width: 300px;
+      max-width: 90%;
+    }
+
+    #giornata-select {
+      width: 200px;
+      max-width: 90%;
+    }
+
+    .match {
+      width: 900px;
+      max-width: 100%;
+      background: white;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .giornata {
+      text-align: center;
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 5px;
+    }
+
+    .match h3 {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: var(--verde);
+    }
+
+    .teams {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+      width: 100%;
+      flex-wrap: nowrap;
+    }
+
+    .team {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .team img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      margin-bottom: 5px;
+    }
+
+    .vs {
+      font-size: 32px;
+      font-weight: bold;
+      color: #555;
+      flex: 0.5;
+    }
+
+    .result {
+      margin-top: 15px;
+      font-size: 20px;
+      text-align: center;
+      color: #1b5e20;
+    }
+
+    .scorers {
+      font-size: 16px;
+      margin-top: 5px;
+      color: #555;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .match {
+        width: 300px;
+        padding: 15px;
+      }
+
+      .team img {
+        width: 32px;
+        height: 32px;
+      }
+
+      .vs {
+        font-size: 22px;
+      }
+
+      .scorers {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="kickoff_logo.png" alt="Logo KickOff">
+  </header>
+
+  <h1>Calendario Partite</h1>
+
+  <input type="text" id="search" placeholder="Cerca squadra...">
+  <select id="giornata-select">
+    <option value="">Tutte le giornate</option>
+  </select>
+
+  <div id="partite-container"></div>
+
+  <script>
+    let partite = [];
+
+    const container = document.getElementById("partite-container");
+    const search = document.getElementById("search");
+    const giornataSelect = document.getElementById("giornata-select");
+
+    function popolaGiornate() {
+      const giornate = [...new Set(partite.map(p => p.giornata))].sort((a, b) => a - b);
+      giornate.forEach(g => {
+        const opt = document.createElement("option");
+        opt.value = g;
+        opt.textContent = `Giornata ${g}`;
+        giornataSelect.appendChild(opt);
+      });
+    }
+
+    function mostraPartite() {
+      const filtroSquadra = search.value.trim().toLowerCase();
+      const filtroGiornata = giornataSelect.value;
+
+      container.innerHTML = "";
+
+      const filtrate = partite.filter(p => {
+        const includeTeam = p.casa.toLowerCase().includes(filtroSquadra) || p.ospite.toLowerCase().includes(filtroSquadra);
+        const includeGiornata = !filtroGiornata || p.giornata == filtroGiornata;
+        return includeTeam && includeGiornata;
+      });
+
+      if (filtrate.length === 0) {
+        container.innerHTML = "<p>Nessuna partita trovata.</p>";
+        return;
+      }
+
+      filtrate.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "match";
+
+        let html = `
+          <div class="giornata">Giornata ${p.giornata}</div>
+          <h3>${p.data} – ${p.ora}</h3>
+          <div class="teams">
+            <div class="team">
+              <img src="classifica_loghi/${p.logo_casa}" alt="${p.casa}">
+              <div>${p.casa}</div>
+            </div>
+            <div class="vs">${p.risultato || "VS"}</div>
+            <div class="team">
+              <img src="classifica_loghi/${p.logo_ospite}" alt="${p.ospite}">
+              <div>${p.ospite}</div>
+            </div>
+          </div>
+        `;
+
+        if (p.risultato && p.marcatori) {
+          html += `<div class="result">Marcatori:</div>`;
+          html += `<div class="scorers"><strong>${p.casa}</strong>: ${p.marcatori[p.casa]?.join(", ") || "—"}</div>`;
+          html += `<div class="scorers"><strong>${p.ospite}</strong>: ${p.marcatori[p.ospite]?.join(", ") || "—"}</div>`;
+        }
+
+        div.innerHTML = html;
+        container.appendChild(div);
+      });
+    }
+
+    // Caricamento dati dal file JSON esterno
+    fetch("partite.json")
+      .then(response => response.json())
+      .then(data => {
+        partite = data;
+        popolaGiornate();
+        mostraPartite();
+      })
+      .catch(err => {
+        container.innerHTML = "<p>Errore nel caricamento delle partite.</p>";
+        console.error("Errore nel caricamento del JSON:", err);
+      });
+
+    search.addEventListener("input", mostraPartite);
+    giornataSelect.addEventListener("change", mostraPartite);
+  </script>
+
+</body>
+</html>
