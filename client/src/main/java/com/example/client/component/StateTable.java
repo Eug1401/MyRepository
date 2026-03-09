@@ -16,4 +16,8 @@ public class StateTable {
             table.put(s, 0);
         }
     }
+
+    public void reset() {
+        this.table.replaceAll((k, v) -> 0);
+    }
 }

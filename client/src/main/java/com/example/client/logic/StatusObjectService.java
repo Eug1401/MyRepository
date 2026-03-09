@@ -22,6 +22,8 @@ public class StatusObjectService {
 
     public HashMap<Stato, Integer> countState () {
 
+        stateTable.reset();
+
         for (GetStatusObjectDTO x : statusObjectClient.getAllStatusObject()) {
             Stato s = x.getStato();
             stateTable.getTable().put(s, stateTable.getTable().get(s) + 1);
