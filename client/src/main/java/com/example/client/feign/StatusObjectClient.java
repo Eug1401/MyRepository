@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
+//nell'url va specificato il nome dell'altro servizio nel container (demo -> nel container è app)
 @FeignClient(name="object-status-service", url="http://app:8080")
 public interface StatusObjectClient {
 
