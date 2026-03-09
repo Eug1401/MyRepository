@@ -34,15 +34,10 @@ public class StatusObjectService {
     @CacheEvict(value = "StatusObjectCache", key = "'all'")
     public EsitDTO addStatusObject(PostStatusObjectDTO statusObjectDTO) {
 
-        try {
-            StatusObject SO = statusObjectMapper.toEntity(statusObjectDTO);
+        StatusObject SO = statusObjectMapper.toEntity(statusObjectDTO);
 
-            statusObjectRepository.save(SO);
-            return new PositiveEsitDTO("Status object salvato");
-
-        } catch(Exception e) {
-            return new NegativeEsitDTO(e.getMessage());
-        }
+        statusObjectRepository.save(SO);
+        return new PositiveEsitDTO("Status object salvato");
     }
 
 

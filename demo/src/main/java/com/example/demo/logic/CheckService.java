@@ -3,7 +3,6 @@ package com.example.demo.logic;
 import com.example.demo.DTO.NegativeEsitDTO;
 import com.example.demo.DTO.PositiveEsitDTO;
 import com.example.demo.DTO.PostIncomingMessageDTO;
-import com.example.demo.Enums.Esito;
 import com.example.demo.Entity.IncomingMessage;
 import com.example.demo.DTO.EsitDTO;
 import com.example.demo.Enums.MessaggioDaControllare;
@@ -12,7 +11,6 @@ import com.example.demo.repository.ObjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,12 +40,9 @@ public class CheckService {
     public EsitDTO addMessage(PostIncomingMessageDTO postIncomingMessageDTO) {
 
         IncomingMessage IM = incomingMessageMapper.toIncomingMessage(postIncomingMessageDTO);
-        try {
-            objectRepository.save(IM);
-            return new PositiveEsitDTO("Messaggio salvato in memoria");
-        } catch (Exception e) {
-            return new NegativeEsitDTO(e.getMessage());
-        }
+
+        objectRepository.save(IM);
+        return new PositiveEsitDTO("Messaggio salvato in memoria");
     }
 
 
