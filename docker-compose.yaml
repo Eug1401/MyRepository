@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  redis_igt:
+    image: redis/redis-stack:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis:/data
+    container_name: redis_igt
+
+  postgres:
+    image: postgres:16
+    container_name: demo-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: demodb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: demo-app
+    restart: always
+    depends_on:
+      - postgres
+      - redis_igt
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/demodb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_REDIS_HOST: redis_igt
+      SPRING_REDIS_PORT: 6379
+
+  client-app:
+    build: ./client
+    container_name: client-app
+    restart: always
+    depends_on:
+      - app
+    ports:
+      - "8081:8080"
+
+volumes:
+  pgdata:
