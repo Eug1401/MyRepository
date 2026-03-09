@@ -1,4 +1,4 @@
-package com.example.client.session;
+package com.example.client.logic;
 
 import com.example.client.dto.GetStatusObjectDTO;
 import com.example.client.enums.Stato;

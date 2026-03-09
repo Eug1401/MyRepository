@@ -1,7 +1,7 @@
-package com.example.client.logic;
+package com.example.client.session;
 
 import com.example.client.enums.Stato;
-import com.example.client.session.StatusObjectService;
+import com.example.client.logic.StatusObjectService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
