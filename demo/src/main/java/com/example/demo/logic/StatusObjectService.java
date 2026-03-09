@@ -1,24 +1,16 @@
 package com.example.demo.logic;
 
-import com.example.demo.DTO.EsitDTO;
-import com.example.demo.DTO.GetStatusObjectDTO;
-import com.example.demo.DTO.PostStatusObjectDTO;
-import com.example.demo.DTO.PutStatusObjectDTO;
+import com.example.demo.DTO.*;
 import com.example.demo.Entity.StatusObject;
-import com.example.demo.Enums.Esito;
-import com.example.demo.Enums.Stato;
 import com.example.demo.mapper.StatusObjectMapper;
 import com.example.demo.repository.StatusObjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.data.projection.EntityProjection.ProjectionType.DTO;
 
 @Service
 public class StatusObjectService {
@@ -37,27 +29,16 @@ public class StatusObjectService {
     @CacheEvict(value = "StatusObjectCache", key = "'all'")
     public EsitDTO addStatusObject(PostStatusObjectDTO statusObjectDTO) {
 
-        EsitDTO res = new EsitDTO();
+        StatusObject SO = statusObjectMapper.toEntity(statusObjectDTO);
 
-        try {
-            StatusObject SO = statusObjectMapper.toEntity(statusObjectDTO);
+        statusObjectRepository.save(SO);
 
-            statusObjectRepository.save(SO);
-            res.setEsito(Esito.POSITIVO.getValore());
-            res.setMessage(SO.getNome());
-
-        } catch(Exception e) {
-            res.setEsito(Esito.NEGATIVO.getValore());
-            res.setMessage(statusObjectDTO.getNome());
-        }
-
-        return res;
+        return new PositiveEsitDTO("Status object salvato");
     }
 
 
     @CacheEvict(value = "StatusObjectCache", key = "'all'")  //pulisce la cache se viene aggiornata la lista, in modo che verrà ricaricata dal db alla prossima get
     public EsitDTO modifyStatusObject (PutStatusObjectDTO PSO) {
-        EsitDTO res = new EsitDTO();
 
         Optional<StatusObject> statusObject = statusObjectRepository.findById(PSO.getCodiceIdentificativo());
         if(statusObject.isPresent()) {
@@ -68,14 +49,10 @@ public class StatusObjectService {
 
             statusObjectRepository.save(SO);
 
-            res.setMessage("Aggiornamento stato avvenuto");
-            res.setEsito(Esito.POSITIVO.getValore());
+            return new PositiveEsitDTO("Stato dell'oggetto: "+SO.getCodiceIdentificativo()+ " aggiornato");
         } else {
-            res.setMessage("Aggiornamento fallito, risorsa non trovata");
-            res.setEsito(Esito.NEGATIVO.getValore());
+            return new NegativeEsitDTO("Risorsa non trovata");
         }
-
-        return res;
     }
 
     //viene utilizzata entry chiamata 'all' per salvare in Redis
