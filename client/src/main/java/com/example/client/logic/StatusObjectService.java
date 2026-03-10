@@ -20,15 +20,18 @@ public class StatusObjectService {
         this.stateTable = stateTable;
     }
 
+    //calcolo statistiche su mappa ricevuta
     public HashMap<Stato, Integer> countState () {
 
-        stateTable.reset();
+        stateTable.reset();  //azzero
 
+        //conteggio degli elementi per ogni stato (AGGIORNATO, DA AGGIORNARE)
         for (GetStatusObjectDTO x : statusObjectClient.getAllStatusObject()) {
             Stato s = x.getStato();
             stateTable.getTable().put(s, stateTable.getTable().get(s) + 1);
         }
 
+        //restituisco mappa che associa ad ogni stato il numero di elementi (in quel particolare stato)
         return stateTable.getTable();
     }
 }

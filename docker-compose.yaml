@@ -23,7 +23,7 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   app:
-    build: .
+    build: ./demo
     container_name: demo-app
     restart: always
     depends_on:
