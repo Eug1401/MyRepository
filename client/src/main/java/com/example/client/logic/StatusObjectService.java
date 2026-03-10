@@ -32,7 +32,6 @@ public class StatusObjectService {
         }
 
         //restituisco mappa che associa ad ogni stato il numero di elementi (in quel particolare stato)
-        //prova commit
         return stateTable.getTable();
     }
 }
