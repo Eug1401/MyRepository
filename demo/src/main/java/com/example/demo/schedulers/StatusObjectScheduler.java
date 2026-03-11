@@ -3,6 +3,8 @@ package com.example.demo.schedulers;
 import com.example.demo.Entity.StatusObject;
 import com.example.demo.mapper.StatusObjectMapper;
 import com.example.demo.repository.StatusObjectRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ public class StatusObjectScheduler {
     private final StatusObjectRepository statusObjectRepository;
 
     private final StatusObjectMapper statusObjectMapper;
+
+    Logger logger = LoggerFactory.getLogger(StatusObjectScheduler.class);
 
     @Autowired
     StatusObjectScheduler(StatusObjectRepository statusObjectRepository, StatusObjectMapper statusObjectMapper) {
@@ -33,7 +37,7 @@ public class StatusObjectScheduler {
         List<StatusObject> objects = statusObjectRepository.findByNomeStartingWithConsonant();
         objects
                 .forEach(x -> {
-                    System.out.println("NOME: " + statusObjectMapper.toResponseStatusObject(x).getNome());  //logger
+                    logger.info("NOME: {}", statusObjectMapper.toResponseStatusObject(x).getNome());  //logger
                 });
     }
 
