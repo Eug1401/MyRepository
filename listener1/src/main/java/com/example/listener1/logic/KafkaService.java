@@ -11,6 +11,9 @@ public class KafkaService {
 
     private static final Logger log = LoggerFactory.getLogger(KafkaService.class);
 
+    //mi iscrivo al topic 'MyTopic' e rimango in attesa di messaggio
+    //mi aspetto di ricevere una StateTable
+    //definisco il gruppo del listener1 : "group1"
     @KafkaListener(topics = "myTopic", groupId = "group1")
     public void listen(StateTable stateTable) {
         log.info("Messaggio ricevuto: {}", stateTable);
