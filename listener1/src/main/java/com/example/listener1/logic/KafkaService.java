@@ -19,4 +19,9 @@ public class KafkaService {
         log.info("Messaggio ricevuto: {}", stateTable);
     }
 
+
+    //solitamente questi metodi ritornano void e non altri oggetti
+    //il loro obiettivo è la manipolazione dei dati ricevuti o magari l'aggiunta di informazioni al database
+    //le informazioni manipolate possono essere poi inoltrate ad altri microservizi (catena di eventi)
+
 }
