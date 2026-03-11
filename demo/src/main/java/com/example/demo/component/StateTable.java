@@ -1,15 +1,14 @@
-package com.example.client.component;
+package com.example.demo.component;
 
-import com.example.client.enums.Stato;
+import com.example.demo.Enums.Stato;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
-//Singleton
-@Component
+
 @Data
-public class StateTable{
+public class StateTable {
     HashMap<Stato, Integer> table = new HashMap<Stato, Integer>();
 
     public StateTable() {
