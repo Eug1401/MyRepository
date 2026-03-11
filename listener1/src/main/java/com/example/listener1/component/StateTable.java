@@ -1,6 +1,6 @@
-package com.example.demo.component;
+package com.example.listener1.component;
 
-import com.example.demo.Enums.Stato;
+import com.example.listener1.Enums.Stato;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,6 @@ public class StateTable {
             table.put(s, 0);
         }
     }
-
 
     public void reset() {
         this.table.replaceAll((k, v) -> 0);

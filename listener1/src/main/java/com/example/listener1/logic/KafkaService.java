@@ -1,6 +1,6 @@
-package com.example.demo.logic;
+package com.example.listener1.logic;
 
-import com.example.demo.component.StateTable;
+import com.example.listener1.component.StateTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
