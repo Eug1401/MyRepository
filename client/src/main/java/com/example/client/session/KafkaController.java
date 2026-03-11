@@ -16,6 +16,7 @@ public class KafkaController {
         this.kafkaService = kafkaService;
     }
 
+    //metodo per richiedere invio messaggio
     @GetMapping("/send")
     public String getTable() {
         return kafkaService.sendMessage();

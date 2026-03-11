@@ -16,6 +16,8 @@ public class KafkaService {
         this.stateTable = stateTable;
     }
 
+
+    //metodo per l'invio del messaggio (conterrà la stateTable)
     public String  sendMessage() {
         kafkaTemplate.send("myTopic", "stateTable", stateTable );
 
