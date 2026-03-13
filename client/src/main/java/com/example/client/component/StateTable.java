@@ -18,6 +18,16 @@ public class StateTable{
         }
     }
 
+    public void addElement() {
+        this.table.put(Stato.DA_AGGIORNARE, this.table.get(Stato.DA_AGGIORNARE) +1);
+    }
+
+
+    public void putElement() {
+        this.table.put(Stato.AGGIORNATO, this.table.get(Stato.AGGIORNATO) + 1);
+        this.table.put(Stato.DA_AGGIORNARE, this.table.get(Stato.DA_AGGIORNARE) - 1);
+    }
+
 
     public void reset() {
         this.table.replaceAll((k, v) -> 0);

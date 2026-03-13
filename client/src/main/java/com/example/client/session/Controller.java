@@ -1,15 +1,14 @@
 package com.example.client.session;
 
-import com.example.client.enums.Stato;
+import com.example.client.component.StateTable;
 import com.example.client.logic.StatusObjectService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-
 @RestController
-@RequestMapping("/state-controller")
+@RequestMapping("/stateTable-controller")
 public class Controller {
 
     private final StatusObjectService statusObjectService;
@@ -18,8 +17,12 @@ public class Controller {
         this.statusObjectService = statusObjectService;
     }
 
-    @GetMapping("/count")
-    public HashMap<Stato, Integer> countStates() {
-        return statusObjectService.countState();
-    }
+    @PostMapping("/add")
+    public void addElement() {statusObjectService.addElementInTable(); }
+
+    @PostMapping("/put")
+    public void putTable() {statusObjectService.putStateTable(); }
+
+    @GetMapping("/get")
+    public StateTable getStateTable() {return statusObjectService.getStateTable(); }
 }
